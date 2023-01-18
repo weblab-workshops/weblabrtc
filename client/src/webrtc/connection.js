@@ -32,19 +32,14 @@ class RTCConnection {
       }
     };
 
-    if (isHost === true) {
+    if (isHost) {
       this.isHost = isHost;
       this.peerConnection.ondatachannel = (event) => {
         console.log("open data channel");
         this.dataChannel = event.channel;
         this.setupDataChannel();
       };
-
-      this.peerConnection.ontrack = (event) => {
-        console.log("TRACK EVENT!");
-        connection.remoteStreams[this.peer_id] = event.streams[0];
-      };
-    } else if (isHost === false) {
+    } else {
       this.isHost = isHost;
       this.peerConnection.onnegotiationneeded = async () => {
         const offer = await this.peerConnection.createOffer({
@@ -56,14 +51,13 @@ class RTCConnection {
 
       this.dataChannel = this.peerConnection.createDataChannel("channel");
       this.setupDataChannel();
-
-      this.peerConnection.ontrack = (event) => {
-        console.log("TRACK EVENT!");
-        console.log(event.streams.length);
-        connection.remoteStreams[this.peer_id] = event.streams[0];
-        connection.eventTarget.dispatchEvent(new Event("newvideo"));
-      };
     }
+
+    this.peerConnection.ontrack = (event) => {
+      console.log(`TRACK EVENT! with  ${event.streams.length} streams`);
+      connection.remoteStreams[this.peer_id] = event.streams[0];
+      connection.eventTarget.dispatchEvent(new Event("new-video"));
+    };
   }
 
   setupDataChannel() {
@@ -71,7 +65,7 @@ class RTCConnection {
     this.dataChannel.onclose = () => console.log(`Disconnected to peer ${this.peer_id}`);
     this.dataChannel.onmessage = receive_message;
     this.peerConnection.onconnectionstatechange = () =>
-      console.log(`Unexpected change to peer ${this.peer_id}`);
+      console.log(`Something changed in peer ${this.peer_id}`);
   }
 
   async localDescCreated(desc) {

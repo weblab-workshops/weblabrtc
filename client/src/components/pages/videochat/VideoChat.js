@@ -26,14 +26,14 @@ const VideoChat = ({}) => {
   useEffect(() => {
     const constraints = { video: true, audio: true };
 
-    connection.eventTarget.addEventListener("newvideo", newMediaStreams);
+    connection.eventTarget.addEventListener("new-video", newMediaStreams);
 
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then(handleSuccess)
       .catch((error) => console.log(error));
     return () => {
-      connection.eventTarget.removeEventListener("newvideo", newMediaStreams);
+      connection.eventTarget.removeEventListener("new-video", newMediaStreams);
     };
   }, []);
 
