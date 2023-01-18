@@ -53,6 +53,15 @@ const socketManager = require("./server-socket");
 const app = express();
 app.use(validator.checkRoutes);
 
+app.enable("trust proxy");
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https") {
+      res.redirect("https://" + req.header("host") + req.url);
+    } else next();
+  });
+}
+
 // allow us to process POST requests
 app.use(express.json());
 
