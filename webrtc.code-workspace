@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../CardTable"
+		},
+		{
+			"path": "../../Fish/playfish"
+		},
+		{
+			"path": "../react-webrtc"
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"[javascript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		}
+	}
+}
