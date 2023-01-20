@@ -2,6 +2,7 @@ import { connection } from "../../webrtc/connection";
 import React, { useState } from "react";
 
 import { get, post } from "../../utilities";
+import { socket } from "../../client-socket";
 
 const Join = ({}) => {
   const [gameCode, setGameCode] = React.useState("");
@@ -13,6 +14,7 @@ const Join = ({}) => {
   async function join() {
     post("/api/joinRoom", {
       room: gameCode,
+      socketID: socket.id
     }).then((data) => {
       connection.connect_to_peers(data.sockets);
     });

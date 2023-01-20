@@ -30,9 +30,10 @@ module.exports = {
     io = require("socket.io")(http);
 
     io.on("connection", (socket) => {
-      console.log(`socket has connected ${socket.id}`);
+      // console.log(`socket has connected ${socket.id}`);
 
       socket.on("signal-user", (data) => {
+        // console.log(data);
         if (!data || data.to == null) return;
         const to = data.to;
         delete data.to;
@@ -40,6 +41,7 @@ module.exports = {
         data.from = socket.id;
 
         io.to(to).emit("signal-from-user", data);
+        // console.log("reached here");
       });
 
       socket.on("disconnect", (reason) => {

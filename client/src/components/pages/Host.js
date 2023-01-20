@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { socket } from "../../client-socket";
 
 import { get, post } from "../../utilities";
 
@@ -6,7 +7,9 @@ const Host = ({}) => {
   const [code, setCode] = useState("");
 
   async function getCode() {
-    post("/api/createRoom").then((data) => {
+    post("/api/createRoom", {
+      socketID: socket.id
+    }).then((data) => {
       console.log(data);
       setCode(data.room);
     });

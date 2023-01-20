@@ -17,10 +17,13 @@ const VideoChat = ({}) => {
     setLocalMediaStream(stream);
   }
 
-  function newMediaStreams(_event) {
+  function newMediaStreams(event) {
     console.log("HELLO WORLD!");
     // console.log(connection.remoteStreams);
-    setRemoteStreams(connection.remoteStreams);
+    setRemoteStreams((old) => {
+      console.log(event.detail);
+      return [...old, event.detail];
+    });
   }
 
   useEffect(() => {

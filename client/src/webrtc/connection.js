@@ -54,9 +54,9 @@ class RTCConnection {
     }
 
     this.peerConnection.ontrack = (event) => {
-      console.log(`TRACK EVENT! with  ${event.streams.length} streams`);
+      console.log(`TRACK EVENT! with  ${event.streams.length} streams ${this.peer_id}`);
       connection.remoteStreams[this.peer_id] = event.streams[0];
-      connection.eventTarget.dispatchEvent(new Event("new-video"));
+      connection.eventTarget.dispatchEvent(new CustomEvent("new-video", { detail: event.streams[0] }));
     };
   }
 
@@ -124,6 +124,8 @@ export const connection = {
 
   connect_to_peers(sockets) {
     sockets.forEach((socket) => {
+      console.log(`connect_to_peers ${socket}`);
+
       const newConn = new RTCConnection();
       this.peers[socket] = newConn;
       newConn.start(rtcConfiguration, socket, false);

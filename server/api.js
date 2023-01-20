@@ -59,9 +59,8 @@ const roomToSocketsMap = {}; // maps room to list of socket IDs
 // |------------------------------|
 
 router.post("/createRoom", (req, res) => {
-  if (req.user) {
-    const socketID = socketManager.getSocketFromUserID(req.user._id).id;
-
+  const socketID = req.body.socketID;
+  if (socketID) {
     const newRoom = util.randomString(4);
 
     socketToRoomMap[socketID] = newRoom;
@@ -79,9 +78,8 @@ router.post("/createRoom", (req, res) => {
 
 router.post("/joinRoom", (req, res) => {
   const room = req.body.room;
-  if (req.user && room) {
-    const socketID = socketManager.getSocketFromUserID(req.user._id).id;
-
+  const socketID = req.body.socketID;
+  if (room && socketID) {
     socketToRoomMap[socketID] = room;
     const currentSockets = [...roomToSocketsMap[room]];
     roomToSocketsMap[room].push(socketID);
