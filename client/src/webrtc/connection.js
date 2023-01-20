@@ -55,8 +55,11 @@ class RTCConnection {
 
     this.peerConnection.ontrack = (event) => {
       console.log(`TRACK EVENT! with  ${event.streams.length} streams ${this.peer_id}`);
-      connection.remoteStreams[this.peer_id] = event.streams[0];
-      connection.eventTarget.dispatchEvent(new CustomEvent("new-video", { detail: event.streams[0] }));
+
+      if (connection.remoteStreams[this.peer_id] === undefined) {
+        connection.remoteStreams[this.peer_id] = event.streams[0];
+        connection.eventTarget.dispatchEvent(new CustomEvent("new-video", { detail: event.streams[0] }));
+      }
     };
   }
 
